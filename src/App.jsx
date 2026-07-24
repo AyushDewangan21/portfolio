@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Mail,
   ExternalLink,
@@ -19,6 +19,11 @@ import {
   Package,
   GitBranch,
   CreditCard,
+  Maximize2,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  CheckCircle2,
 } from "lucide-react";
 import { FaGithub, FaLinkedin, FaReact, FaNode } from "react-icons/fa";
 import {
@@ -31,9 +36,300 @@ import {
 } from "react-icons/si";
 import { motion } from "framer-motion";
 
+const hrProjectViews = [
+  {
+    id: "dashboard",
+    title: "HR Analytics Dashboard",
+    description:
+      "Live workforce intelligence featuring today's attendance summary (Present, Late, Absent), active workforce distribution donut charts, retention stats, and real-time employee overview.",
+    image: "/hr-management/hr-dashboard.png",
+    tag: "Dashboard Analytics",
+  },
+  {
+    id: "employees",
+    title: "Employee Directory & Profiles",
+    description:
+      "Comprehensive employee profiles management, department & shop assignments, joining records, mobile & family details, CSV import/export, and new employee onboarding workflow.",
+    image: "/hr-management/hr-employees.png",
+    tag: "Employee Directory",
+  },
+  {
+    id: "daily-attendance",
+    title: "Daily Attendance Sheet",
+    description:
+      "Real-time daily punch management with store filters, employee lookup, punch logs, in/out timestamps, hours worked, late calculations, and manual punch edits.",
+    image: "/hr-management/hr-daily-attendance.png",
+    tag: "Daily Attendance",
+  },
+  {
+    id: "monthly-attendance",
+    title: "Monthly Attendance Statistics",
+    description:
+      "Detailed monthly attendance tracking with device/location filtering, present/absent/late counts, avg work & lunch hours, serial number tracking, and Excel report export.",
+    image: "/hr-management/hr-monthly-attendance.png",
+    tag: "Monthly Analytics",
+  },
+  {
+    id: "payroll",
+    title: "Payroll Management & Salary Sheets",
+    description:
+      "Automated monthly payroll calculation generated directly from employee attendance database logs, base salary tracking, advance deductions, medical & prorated salary breakdowns, and Bank CSV / Excel exports.",
+    image: "/hr-management/hr-payroll.png",
+    tag: "Payroll Management",
+  },
+];
+
+function ThreeSixtyCarousel({
+  views,
+  activeView,
+  setActiveView,
+  onImageClick,
+}) {
+  const containerRef = useRef(null);
+  const isScrollingRef = useRef(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [dragStartX, setDragStartX] = useState(null);
+
+  // Wheel scroll handler (only rotates on horizontal swipe so vertical page scroll is never trapped)
+  const handleWheel = (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 10) {
+      if (isScrollingRef.current) return;
+      isScrollingRef.current = true;
+      if (e.deltaX > 0) {
+        setActiveView((prev) => (prev + 1) % views.length);
+      } else {
+        setActiveView((prev) => (prev - 1 + views.length) % views.length);
+      }
+      setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 250);
+    }
+  };
+
+  // Mouse Drag handlers
+  const handleMouseDown = (e) => {
+    setDragStartX(e.clientX);
+  };
+
+  const handleMouseUp = (e) => {
+    if (dragStartX !== null) {
+      const diffX = dragStartX - e.clientX;
+      if (Math.abs(diffX) > 30) {
+        if (diffX > 0) {
+          setActiveView((prev) => (prev + 1) % views.length);
+        } else {
+          setActiveView((prev) => (prev - 1 + views.length) % views.length);
+        }
+      }
+      setDragStartX(null);
+    }
+  };
+
+  // Touch handlers
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const diffX = touchStartX - touchEndX;
+    if (Math.abs(diffX) > 30) {
+      if (diffX > 0) {
+        setActiveView((prev) => (prev + 1) % views.length);
+      } else {
+        setActiveView((prev) => (prev - 1 + views.length) % views.length);
+      }
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      onWheel={handleWheel}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className="relative w-full max-w-[1650px] mx-auto py-6 overflow-hidden select-none cursor-grab active:cursor-grabbing"
+      style={{ perspective: "1400px" }}
+    >
+      {/* 360 Interactive Badge */}
+      <div className="text-center mb-6">
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-red-500/20 text-blue-300 border border-blue-500/40 shadow-lg">
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          🔄 360° Interactive 3D Showcase — Drag or swipe left/right to rotate
+        </span>
+      </div>
+
+      {/* 3D Carousel Stage */}
+      <div className="relative h-[360px] sm:h-[480px] md:h-[600px] lg:h-[660px] w-full max-w-[1600px] mx-auto flex items-center justify-center">
+        {views.map((view, idx) => {
+          let diff = idx - activeView;
+          const total = views.length;
+          if (diff > Math.floor(total / 2)) diff -= total;
+          if (diff < -Math.floor(total / 2)) diff += total;
+
+          const isActive = diff === 0;
+
+          // Responsive spacing for broader cards
+          const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+          const isTablet = typeof window !== "undefined" && window.innerWidth < 1024;
+          const spacing = isMobile ? 150 : isTablet ? 250 : 360;
+
+          // 3D Perspective Coverflow Placement (Broader Stage Math)
+          let rotateY = 0;
+          let translateX = diff * spacing;
+          let translateZ = 0;
+          let scale = 1;
+          let opacity = 1;
+
+          if (diff === 0) {
+            rotateY = 0;
+            translateZ = 150;
+            scale = 1.08;
+            opacity = 1;
+          } else if (diff === -1) {
+            rotateY = 44;
+            translateZ = -20;
+            scale = 0.84;
+            opacity = 0.9;
+          } else if (diff === 1) {
+            rotateY = -44;
+            translateZ = -20;
+            scale = 0.84;
+            opacity = 0.9;
+          } else if (diff === -2) {
+            rotateY = 58;
+            translateZ = -160;
+            scale = 0.65;
+            opacity = 0.45;
+          } else if (diff === 2) {
+            rotateY = -58;
+            translateZ = -160;
+            scale = 0.65;
+            opacity = 0.45;
+          }
+
+          const zIndex = 30 - Math.abs(diff) * 10;
+
+          return (
+            <motion.div
+              key={view.id}
+              onClick={() => {
+                if (isActive) {
+                  onImageClick(view.image);
+                } else {
+                  setActiveView(idx);
+                }
+              }}
+              animate={{
+                rotateY: `${rotateY}deg`,
+                x: `${translateX}px`,
+                z: `${translateZ}px`,
+                scale: scale,
+                opacity: opacity,
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{
+                zIndex: zIndex,
+                transformStyle: "preserve-3d",
+              }}
+              className="absolute w-[300px] sm:w-[520px] md:w-[720px] lg:w-[920px] aspect-video cursor-pointer"
+            >
+              {/* Thin rotating shine line border on all 5 photos */}
+              <div
+                className={`shine-border-card ${
+                  isActive ? "shine-border-card-active" : ""
+                }`}
+              >
+                <div className="shine-border-inner aspect-video group">
+                  <img
+                    src={view.image}
+                    alt={view.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                    <span className="text-white text-sm font-bold">
+                      {view.title}
+                    </span>
+                    <span className="text-gray-300 text-xs truncate">
+                      {view.tag} • Click to open full view
+                    </span>
+                  </div>
+
+                  {isActive && (
+                    <div className="absolute top-3 right-3 bg-red-500/80 backdrop-blur-md text-white text-[10px] uppercase font-extrabold px-2.5 py-1 rounded-full border border-white/20 shadow-md z-20">
+                      Active View
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* 5 Equal-Sized View Switcher Tabs */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 max-w-5xl mx-auto mt-6 px-2">
+        {views.map((view, idx) => (
+          <button
+            key={view.id}
+            onClick={() => setActiveView(idx)}
+            className={`w-full h-11 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-300 flex items-center justify-center text-center truncate ${
+              activeView === idx
+                ? "bg-gradient-to-r from-blue-600 via-purple-600 to-red-600 text-white shadow-lg shadow-blue-500/25 ring-2 ring-red-500/40 scale-105"
+                : "bg-slate-900/80 text-gray-400 hover:text-white hover:bg-slate-800 border border-slate-800"
+            }`}
+          >
+            {view.tag}
+          </button>
+        ))}
+      </div>
+
+      {/* Controls Bar */}
+      <div className="flex items-center justify-center gap-4 mt-4">
+        <button
+          onClick={() =>
+            setActiveView((prev) => (prev - 1 + views.length) % views.length)
+          }
+          className="p-3 rounded-full bg-slate-800/80 border border-slate-700 hover:border-blue-500 text-blue-400 hover:text-white shadow-lg transition-all hover:scale-110"
+          aria-label="Previous view"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800">
+          {views.map((view, idx) => (
+            <button
+              key={view.id}
+              onClick={() => setActiveView(idx)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                activeView === idx
+                  ? "bg-gradient-to-r from-blue-500 to-red-500 scale-125 ring-2 ring-red-500/50"
+                  : "bg-slate-700 hover:bg-slate-500"
+              }`}
+              title={view.title}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={() => setActiveView((prev) => (prev + 1) % views.length)}
+          className="p-3 rounded-full bg-slate-800/80 border border-slate-700 hover:border-red-500 text-red-400 hover:text-white shadow-lg transition-all hover:scale-110"
+          aria-label="Next view"
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [activeHrView, setActiveHrView] = useState(0);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   // Scroll spy effect
   useEffect(() => {
@@ -114,11 +410,10 @@ export default function App() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => scrollToSection(item)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                      activeSection === item
-                        ? "text-purple-400 bg-purple-400/10"
-                        : "text-gray-300 hover:text-purple-400 hover:bg-purple-400/10"
-                    }`}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${activeSection === item
+                      ? "text-purple-400 bg-purple-400/10"
+                      : "text-gray-300 hover:text-purple-400 hover:bg-purple-400/10"
+                      }`}
                   >
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </motion.button>
@@ -157,11 +452,10 @@ export default function App() {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
-                    activeSection === item
-                      ? "text-purple-400 bg-purple-400/10"
-                      : "text-gray-300 hover:text-purple-400 hover:bg-purple-400/10"
-                  }`}
+                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${activeSection === item
+                    ? "text-purple-400 bg-purple-400/10"
+                    : "text-gray-300 hover:text-purple-400 hover:bg-purple-400/10"
+                    }`}
                 >
                   {item.charAt(0).toUpperCase() + item.slice(1)}
                 </button>
@@ -716,10 +1010,10 @@ export default function App() {
             </motion.div>
           </div>
         </section>
-        ```
+
         {/* Projects Section */}
         <section id="projects" className="py-20 bg-slate-900/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -728,121 +1022,239 @@ export default function App() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Featured Projects
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 bg-clip-text text-transparent">
+                  Featured Showcase
                 </span>
               </h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto"></div>
-              <p className="text-gray-400 mt-4">
-                Real-world applications I've built
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 mx-auto rounded-full"></div>
+              <p className="text-gray-400 mt-4 max-w-2xl mx-auto text-base md:text-lg">
+                Enterprise HR & Attendance Management System — an all-in-one workforce intelligence & employee operations platform
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              {/* LMS Project */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-                className="group bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300"
-              >
-                <div className="h-48 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-6xl relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-all duration-300"></div>
-                  <span className="relative z-10">📚</span>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-white">
-                      Learning Management System (LMS)
-                    </h3>
-                    <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded-md text-xs">
-                      Live
+            {/* 3D 360 Showcase Carousel */}
+            <div className="bg-slate-800/40 backdrop-blur-md rounded-xl p-4 sm:p-6 md:p-8 border border-slate-700/50 shadow-2xl mb-12">
+              <ThreeSixtyCarousel
+                views={hrProjectViews}
+                activeView={activeHrView}
+                setActiveView={setActiveHrView}
+                onImageClick={(img) => setLightboxImage(img)}
+              />
+
+              {/* Active View Details Card */}
+              <div className="mt-6 pt-6 border-t border-slate-700/60 flex flex-col lg:flex-row gap-6 items-start justify-between">
+                <div className="lg:w-2/3 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-red-500/20 text-blue-300 border border-blue-500/40">
+                      {hrProjectViews[activeHrView].tag}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      Enterprise Suite
                     </span>
                   </div>
-                  <p className="text-gray-400 mb-4">
-                    Full-stack LMS platform with course management, user
-                    authentication, and progress tracking. Features instructor
-                    dashboards and student learning paths.
+                  <h3 className="text-2xl font-bold text-white">
+                    {hrProjectViews[activeHrView].title}
+                  </h3>
+                  <p className="text-gray-300 text-sm leading-relaxed max-w-3xl">
+                    {hrProjectViews[activeHrView].description}
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {["Clerk", "Node.js", "React.js", "Express.js"].map(
-                      (tech, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-md text-xs"
-                        >
-                          {tech}
-                        </span>
-                      ),
-                    )}
+                </div>
+
+                <div className="lg:w-1/3 w-full space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                    System Capabilities:
+                  </h4>
+                  <ul className="space-y-1.5 text-xs text-gray-300">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-blue-400 flex-shrink-0" />
+                      <span>Real-time punch logging & time tracking</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-purple-400 flex-shrink-0" />
+                      <span>Multi-store & location device matching</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-red-400 flex-shrink-0" />
+                      <span>Excel & CSV data reporting exports</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Thick Thread UI String Cable Connector */}
+            <div className="relative flex flex-col items-center my-6">
+              <div className="px-5 py-2 rounded-full bg-slate-900/90 border border-purple-500/40 text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 shadow-xl flex items-center gap-2 z-10">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping"></span>
+                THREAD CONNECTED SYSTEM LINKS
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+              </div>
+
+              {/* Curvy Woven Glowing Cable Strings branching down to Left & Right Cards */}
+              <div className="w-full max-w-4xl h-20 -mt-2 overflow-visible pointer-events-none hidden md:block">
+                <svg className="w-full h-full stroke-current overflow-visible" viewBox="0 0 800 80" fill="none">
+                  <defs>
+                    <linearGradient id="threadGradientLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#3b82f6" />
+                      <stop offset="50%" stopColor="#8b5cf6" />
+                      <stop offset="100%" stopColor="#10b981" />
+                    </linearGradient>
+                    <linearGradient id="threadGradientRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#8b5cf6" />
+                      <stop offset="50%" stopColor="#f43f5e" />
+                      <stop offset="100%" stopColor="#ef4444" />
+                    </linearGradient>
+                    <filter id="threadGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="5" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                  </defs>
+
+                  {/* Left Glow Cable */}
+                  <path
+                    d="M 400 0 C 400 35, 200 35, 200 80"
+                    stroke="url(#threadGradientLeft)"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    opacity="0.5"
+                    filter="url(#threadGlow)"
+                  />
+                  {/* Left Animated Flow Cable */}
+                  <path
+                    d="M 400 0 C 400 35, 200 35, 200 80"
+                    stroke="url(#threadGradientLeft)"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray="14 10"
+                    className="animate-thread-flow"
+                  />
+
+                  {/* Right Glow Cable */}
+                  <path
+                    d="M 400 0 C 400 35, 600 35, 600 80"
+                    stroke="url(#threadGradientRight)"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    opacity="0.5"
+                    filter="url(#threadGlow)"
+                  />
+                  {/* Right Animated Flow Cable */}
+                  <path
+                    d="M 400 0 C 400 35, 600 35, 600 80"
+                    stroke="url(#threadGradientRight)"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray="14 10"
+                    className="animate-thread-flow"
+                  />
+
+                  {/* Cable Connection Nodes */}
+                  <circle cx="400" cy="0" r="7" fill="#8b5cf6" />
+                  <circle cx="400" cy="0" r="4" fill="#ffffff" />
+                  <circle cx="200" cy="80" r="6" fill="#10b981" />
+                  <circle cx="600" cy="80" r="6" fill="#ef4444" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Thread Connected Cards (Live Link + GitHub) */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12 relative z-10">
+              {/* Live Link Card */}
+              <motion.div
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="shine-border-card shine-border-card-active"
+              >
+                <div className="shine-border-inner p-6 sm:p-7 flex flex-col justify-between h-full bg-slate-900/95">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-2 shadow-lg shadow-emerald-500/10">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span> Live System Online
+                      </span>
+                      <ExternalLink size={22} className="text-emerald-400" />
+                    </div>
+                    <h4 className="text-2xl font-extrabold text-white mb-2 tracking-tight">
+                      Live Web Application
+                    </h4>
+                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6">
+                      Explore the live, fully interactive Enterprise HR Management System dashboard with real-time employee profiles, daily/monthly attendance registers, and automated payroll calculations.
+                    </p>
                   </div>
-                  <motion.a
-                    whileHover={{ x: 5 }}
-                    href="https://lms-fronntend.vercel.app"
+
+                  <a
+                    href="https://portfolio-hr-management.vercel.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                    className="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-blue-600 via-purple-600 to-red-600 text-white font-bold text-sm flex items-center justify-center gap-2.5 shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] transition-all duration-300 group"
                   >
-                    View Project <ExternalLink size={16} />
-                  </motion.a>
+                    <span>Launch Live Demo</span>
+                    <ExternalLink size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
                 </div>
               </motion.div>
 
-              {/* Quick Mart Project */}
+              {/* GitHub Repo Card */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-                className="group bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300"
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="shine-border-card"
               >
-                <div className="h-48 bg-gradient-to-br from-green-500/20 to-teal-500/20 flex items-center justify-center text-6xl relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-all duration-300"></div>
-                  <span className="relative z-10">🛍️</span>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-white">
-                      Quick Mart - E-commerce Platform
-                    </h3>
-                    <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded-md text-xs">
-                      Live
-                    </span>
+                <div className="shine-border-inner p-6 sm:p-7 flex flex-col justify-between h-full bg-slate-900/95">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-2 shadow-lg shadow-purple-500/10">
+                        <FaGithub size={14} className="text-purple-400" /> Source Code
+                      </span>
+                      <FaGithub size={22} className="text-purple-400" />
+                    </div>
+                    <h4 className="text-2xl font-extrabold text-white mb-2 tracking-tight">
+                      GitHub Repository
+                    </h4>
+                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6">
+                      Inspect the full-stack codebase, REST API routes, PostgreSQL/MongoDB database models, daily punch log logic, and React frontend component architecture on GitHub.
+                    </p>
                   </div>
-                  <p className="text-gray-400 mb-4">
-                    Modern e-commerce platform with clean UI, responsive design,
-                    and seamless shopping experience. Features product browsing,
-                    cart management, and checkout flow.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {["Clean UI", "Tailwind CSS", "React", "Responsive"].map(
-                      (tech, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-md text-xs"
-                        >
-                          {tech}
-                        </span>
-                      ),
-                    )}
-                  </div>
-                  <motion.a
-                    whileHover={{ x: 5 }}
-                    href="https://quick-mart-ochre.vercel.app"
+
+                  <a
+                    href="https://github.com/ayushdewangan21"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                    className="w-full py-3.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm border border-slate-700 hover:border-purple-500 flex items-center justify-center gap-2.5 shadow-lg hover:scale-[1.02] transition-all duration-300 group"
                   >
-                    View Project <ExternalLink size={16} />
-                  </motion.a>
+                    <span>View Code on GitHub</span>
+                    <FaGithub size={18} className="group-hover:rotate-12 transition-transform" />
+                  </a>
                 </div>
               </motion.div>
             </div>
 
-            {/* Optional: Add a third project card if you want to showcase more */}
+            {/* Lightbox Modal for full size view */}
+            {lightboxImage && (
+              <div
+                className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-2 sm:p-4"
+                onClick={() => setLightboxImage(null)}
+              >
+                <div className="relative max-w-[1000px] w-[96vw]" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={() => setLightboxImage(null)}
+                    className="absolute -top-12 right-0 text-gray-300 hover:text-white p-2 rounded-full bg-slate-800/90 border border-slate-700 shadow-lg"
+                  >
+                    <X size={24} />
+                  </button>
+                  {/* Thin Rotating Shine Line Border around Lightbox picture */}
+                  <div className="shine-border-card shine-border-card-active">
+                    <div className="shine-border-inner flex items-center justify-center">
+                      <img
+                        src={lightboxImage}
+                        alt="Enlarged view"
+                        className="w-full h-auto max-h-[92vh] md:max-h-[95vh] object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="text-center mt-12">
               <motion.a
                 whileHover={{ scale: 1.05 }}
@@ -851,7 +1263,7 @@ export default function App() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 border border-purple-500 text-purple-400 rounded-xl font-semibold hover:bg-purple-500/10 transition-all duration-300"
               >
-                View More on GitHub <ExternalLink size={16} />
+                View More Projects on GitHub <ExternalLink size={16} />
               </motion.a>
             </div>
           </div>

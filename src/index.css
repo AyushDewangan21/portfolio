@@ -69,3 +69,78 @@ h3 {
 .animate-ping {
   animation: ping-live 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+
+/* Thin continuously rotating shine border for images */
+@keyframes spin-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.shine-border-card {
+  position: relative;
+  padding: 2px; /* Very thin border */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
+  transition: all 0.3s ease;
+}
+
+.shine-border-card::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(
+    from 0deg,
+    #3b82f6 0deg,
+    #8b5cf6 90deg,
+    #ef4444 180deg,
+    #3b82f6 270deg,
+    #ef4444 360deg
+  );
+  animation: spin-border 4.5s linear infinite;
+  z-index: 0;
+}
+
+.shine-border-card-active {
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.55);
+}
+
+.shine-border-card-active::before {
+  animation: spin-border 3s linear infinite;
+  background: conic-gradient(
+    from 0deg,
+    #3b82f6 0deg,
+    #f43f5e 120deg,
+    #ef4444 240deg,
+    #3b82f6 360deg
+  );
+}
+
+.shine-border-inner {
+  position: relative;
+  z-index: 10;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: #020617;
+}
+
+/* Thread UI Cable Line Animation */
+@keyframes thread-flow {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-thread-flow {
+  animation: thread-flow 1.5s linear infinite;
+}
