@@ -925,7 +925,7 @@ export default function App() {
 
                       <div>
                         <h3 className="text-2xl font-bold text-white">
-                          Full Stack Web Developer
+                          Full Stack Web Developer Intern 
                         </h3>
                         <p className="text-purple-300 font-medium">
                           Botivate Services LLP
@@ -1086,7 +1086,7 @@ export default function App() {
             <div className="relative flex flex-col items-center my-6">
               <div className="px-5 py-2 rounded-full bg-slate-900/90 border border-purple-500/40 text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 shadow-xl flex items-center gap-2 z-10">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping"></span>
-                THREAD CONNECTED SYSTEM LINKS
+                HR Automation System
                 <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
               </div>
 
