@@ -226,8 +226,8 @@ function ThreeSixtyCarousel({
             key={view.id}
             onClick={() => setActiveView(idx)}
             className={`transition-all duration-200 rounded-full ${activeView === idx
-                ? "w-6 h-2.5 bg-zinc-100 "
-                : "w-2.5 h-2.5 bg-zinc-700 hover:bg-zinc-500"
+              ? "w-6 h-2.5 bg-zinc-100 "
+              : "w-2.5 h-2.5 bg-zinc-700 hover:bg-zinc-500"
               }`}
             title={view.title}
             aria-label={`Go to view ${idx + 1}`}
@@ -526,8 +526,8 @@ export default function App() {
               animate={{ opacity: 1, x: 0 }}
               className="flex-shrink-0"
             >
-              <span className="text-2xl font-bold bg-white f bg-clip-text text-transparent">
-                AD <span className="text-yellow-400">.</span>
+              <span className="text-2xl font-extrabold bg-white f bg-clip-text text-transparent">
+                AD<span className="text-yellow-400">.</span>
               </span>
             </motion.div>
 
@@ -624,11 +624,11 @@ export default function App() {
                   transition={{ delay: 0.2 }}
                   className="mb-8 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/50 bg-emerald-950/40 text-emerald-400 text-xs sm:text-sm font-bold mb-4 backdrop-blur-md shadow-[0_0_18px_rgba(16,185,129,0.2)]"
                 >
-                  <span className="relative flex h-2.5 w-2.5">
+                  <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                   </span>
-                  <span className="tracking-wide">Open to work</span>
+                  <span className="tracking-wide text-xs">AVAILABLE FOR WORK</span>
                 </motion.div>
 
                 <h1 className="text-5xl md:text-7xl font-extrabold mb-2 tracking-tight">
@@ -637,7 +637,7 @@ export default function App() {
                   </span>
                 </h1>
                 <p className="text-xl md:text-2xl text-zinc-300 font-semibold mb-4">
-                  Software Engineer
+                  SOFTWARE ENGINEER
                 </p>
                 <p className="text-lg text-zinc-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                   Building modern, responsive web applications with a passion for
@@ -657,6 +657,10 @@ export default function App() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     href="#projects"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection("projects");
+                    }}
                     className="px-8 py-3.5 border-2 border-zinc-700 text-zinc-300 hover:bg-zinc-800/60 hover:border-zinc-500 rounded-xl font-semibold transition-all duration-200"
                   >
                     View Work
@@ -693,7 +697,7 @@ export default function App() {
                       className={`relative group overflow-hidden text-zinc-400 p-3 rounded-full shadow-md border border-zinc-800 ${social.border} transition-all duration-200`}
                     >
                       {/* Bottom-to-Top Fill Slide Animation */}
-                      <span className={`absolute inset-0 w-full h-full ${social.fill} translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0`} />
+                      <span className={`absolute inset-0 w-full h-full ${social.fill} opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-200 ease-out z-0`} />
 
                       {/* Content */}
                       <span className={`relative z-10 block ${social.hoverText} transition-colors duration-200`}>
@@ -976,7 +980,7 @@ export default function App() {
                       }}
                       className="w-9 h-9 bg-zinc-800/80 backdrop-blur-sm border border-zinc-700/70 rounded-xl flex items-center justify-center text-zinc-300 shadow-md transform-gpu [backface-visibility:hidden]"
                     >
-                      <Sparkles className="w-4 h-4 text-zinc-300" />
+                      <FaNode className="w-5 h-5 text-green-500" />
                     </motion.div>
                   </motion.div>
 
@@ -1051,93 +1055,164 @@ export default function App() {
                 {
                   name: "React",
                   icon: FaReact,
-                  color: "text-blue-400",
+                  color: "text-sky-400",
+                  bgColor: "bg-sky-600",
+                  badgeColor: "bg-sky-400",
+                  exp: "2+ years building modern SPAs & interactive user interfaces",
+                  feature: "Dynamic component architecture, custom hooks & reactive state",
                 },
                 {
                   name: "TypeScript",
                   icon: SiTypescript,
                   color: "text-blue-500",
+                  bgColor: "bg-blue-600",
+                  badgeColor: "bg-blue-500",
+                  exp: "Strongly-typed full-stack Web Application development",
+                  feature: "Type-safe interfaces, refactoring & robust API contracts",
                 },
                 {
                   name: "Next.js",
                   icon: SiNextdotjs,
                   color: "text-zinc-100",
+                  bgColor: "bg-zinc-800",
+                  badgeColor: "bg-white",
+                  exp: "Production experience with SSR, SSG & App Router",
+                  feature: "Server-side rendering, SEO optimization & server actions",
                 },
                 {
                   name: "Tailwind",
                   icon: Zap,
                   color: "text-cyan-400",
+                  bgColor: "bg-cyan-600",
+                  badgeColor: "bg-cyan-400",
+                  exp: "Utility-first responsive design & dark mode systems",
+                  feature: "Custom themes, glassmorphic UI & micro-animations",
                 },
                 {
                   name: "TanStack Query",
                   icon: SiReactquery,
-                  color: "text-red-400",
+                  color: "text-rose-500",
+                  bgColor: "bg-rose-600",
+                  badgeColor: "bg-rose-500",
+                  exp: "Server state management & asynchronous data fetching",
+                  feature: "Automatic caching, background revalidation & optimistic updates",
                 },
                 {
                   name: "Node.js",
                   icon: FaNode,
                   color: "text-emerald-400",
+                  bgColor: "bg-emerald-600",
+                  badgeColor: "bg-emerald-400",
+                  exp: "Scalable event-driven asynchronous backend services",
+                  feature: "RESTful APIs, microservices & background processing",
                 },
                 {
                   name: "Express",
                   icon: SiExpress,
                   color: "text-zinc-200",
+                  bgColor: "bg-zinc-800",
+                  badgeColor: "bg-zinc-200",
+                  exp: "Backend API routing & web server orchestration",
+                  feature: "Custom middleware, JWT auth & request pipeline handlers",
                 },
                 {
                   name: "REST APIs",
                   icon: Globe,
                   color: "text-cyan-400",
+                  bgColor: "bg-cyan-600",
+                  badgeColor: "bg-cyan-400",
+                  exp: "Designing clean & scalable API architectures",
+                  feature: "Structured endpoints, JSON validation, status codes & CORS",
                 },
                 {
                   name: "WebSockets",
                   icon: Radio,
                   color: "text-amber-400",
+                  bgColor: "bg-amber-600",
+                  badgeColor: "bg-amber-400",
+                  exp: "Real-time bidirectional event streaming & communication",
+                  feature: "Live chat features, instant notifications & socket channels",
                 },
                 {
                   name: "PostgreSQL",
                   icon: SiPostgresql,
                   color: "text-blue-400",
+                  bgColor: "bg-blue-600",
+                  badgeColor: "bg-blue-400",
+                  exp: "Relational database modeling & query optimization",
+                  feature: "Complex SQL joins, indexing, migrations & relational schemas",
                 },
                 {
                   name: "MongoDB",
                   icon: SiMongodb,
                   color: "text-emerald-500",
+                  bgColor: "bg-emerald-600",
+                  badgeColor: "bg-emerald-500",
+                  exp: "NoSQL document store & flexible schema modeling",
+                  feature: "JSON document collections & aggregation pipelines",
                 },
                 {
                   name: "Supabase",
                   icon: SiSupabase,
                   color: "text-emerald-400",
+                  bgColor: "bg-emerald-600",
+                  badgeColor: "bg-emerald-400",
+                  exp: "Backend-as-a-Service & serverless Postgres integration",
+                  feature: "Postgres database, Auth & Row Level Security (RLS)",
                 },
                 {
                   name: "Redis",
                   icon: SiRedis,
-                  color: "text-red-400",
+                  color: "text-red-500",
+                  bgColor: "bg-red-600",
+                  badgeColor: "bg-red-500",
+                  exp: "In-memory caching & high-speed data store",
+                  feature: "API response caching, session management & rate limiting",
                 },
                 {
                   name: "Redux",
                   icon: Package,
                   color: "text-purple-400",
+                  bgColor: "bg-purple-600",
+                  badgeColor: "bg-purple-400",
+                  exp: "Global application state management in complex apps",
+                  feature: "Redux Toolkit slices, async thunks & state persistence",
                 },
-
                 {
                   name: "Git",
                   icon: GitBranch,
-                  color: "text-orange-400",
+                  color: "text-orange-500",
+                  bgColor: "bg-orange-600",
+                  badgeColor: "bg-orange-500",
+                  exp: "Distributed version control & repository management",
+                  feature: "Feature branching, interactive rebasing & conflict resolution",
                 },
                 {
                   name: "GitHub",
                   icon: FaGithub,
                   color: "text-zinc-300",
+                  bgColor: "bg-zinc-800",
+                  badgeColor: "bg-zinc-300",
+                  exp: "Collaborative code hosting & workflow management",
+                  feature: "Pull requests, code reviews, issue tracking & releases",
                 },
                 {
                   name: "Vercel",
                   icon: SiVercel,
                   color: "text-zinc-100",
+                  bgColor: "bg-zinc-800",
+                  badgeColor: "bg-white",
+                  exp: "Continuous integration & cloud edge deployment",
+                  feature: "Automated preview deployments, edge functions & SSL",
                 },
                 {
                   name: "CI/CD Pipeline",
                   icon: Workflow,
                   color: "text-blue-400",
+                  bgColor: "bg-blue-600",
+                  badgeColor: "bg-blue-400",
+                  exp: "Automated build, test & deployment workflows",
+                  feature: "Lint checks, test automation & deployment triggers",
                 },
               ].map((tech, index) => {
                 const TechIcon = tech.icon;
@@ -1168,6 +1243,9 @@ export default function App() {
                 const dropDelay = (index % 6) * 0.08;
                 const floatDuration = 4 + (index % 4) * 0.7;
 
+                // Position tooltip to the left for right-side items, and to the right for left-side items
+                const isRightSide = index % 6 >= 3;
+
                 return (
                   <motion.div
                     key={index}
@@ -1183,7 +1261,7 @@ export default function App() {
                       damping: 14,
                       delay: dropDelay,
                     }}
-                    className="relative group flex items-center justify-center"
+                    className="relative group flex items-center justify-center hover:z-50"
                   >
                     {/* Angled Asteroid White Smoke Trail (Fades out as asteroid lands) */}
                     <motion.div
@@ -1219,6 +1297,45 @@ export default function App() {
                       <span className="text-xs font-semibold text-zinc-300 group-hover:text-white transition-colors text-center relative z-10 tracking-wide">
                         {tech.name}
                       </span>
+
+                      {/* On-Hover Experience & Usage Tooltip Box (Appears on Left or Right with Color Wipe Up) */}
+                      <div
+                        className={`absolute top-1/2 -translate-y-1/2 w-52 sm:w-60 opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50 ${isRightSide ? "right-full mr-3" : "left-full ml-3"
+                          }`}
+                      >
+                        <div className="relative overflow-hidden rounded-lg bg-zinc-950/95 border border-zinc-700/80 p-3 shadow-2xl backdrop-blur-xl">
+                          {/* Bottom-to-Top Tech Color Wipe Animation Layer */}
+                          <span
+                            className={`absolute inset-0 w-full h-full ${tech.bgColor} opacity-0 group-hover:opacity-90 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0`}
+                          />
+
+                          {/* Tooltip Text Content */}
+                          <div className="relative z-10">
+                            <div className="flex items-center gap-2 mb-1.5  border-white/20 pb-1.5">
+                              <span className={`w-2 h-2 rounded-full ${tech.badgeColor} animate-pulse`} />
+                              <span className="font-bold text-xs text-white uppercase tracking-wider">{tech.name}</span>
+                            </div>
+                            <div className="space-y-1.5 text-left text-[11px] leading-tight">
+                              <p className="text-zinc-100">
+                                <span className="text-white/80 font-bold block mb-0.5">Experienced with:</span>
+                                {tech.exp}
+                              </p>
+                              <p className="text-zinc-100">
+                                <span className="text-white/80 font-bold block mb-0.5">Utilized for:</span>
+                                {tech.feature}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Tooltip Side Arrow Pointer */}
+                        <div
+                          className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rotate-45 z-10 ${tech.bgColor} ${isRightSide
+                              ? "-right-1.5 border-r border-t border-zinc-700/80"
+                              : "-left-1.5 border-l border-b border-zinc-700/80"
+                            }`}
+                        />
+                      </div>
                     </motion.div>
                   </motion.div>
                 );
@@ -1588,7 +1705,7 @@ export default function App() {
                 <div className="space-y-3.5">
 
                   <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
-                    HUMAN RESOURCE MANAGEMENT AUTOMATION SYSTEM .
+                    HUMAN RESOURCE MANAGEMENT AUTOMATION SYSTEM <span className="text-purple-600">.</span>
                   </h3>
 
                   <div className="space-y-1.5 pt-1">
@@ -1636,7 +1753,7 @@ export default function App() {
                     href="https://portfolio-hr-management.vercel.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative group overflow-hidden px-5 py-2.5 border border-green-700 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 hover:border-white hover:text-black"
+                    className="relative group overflow-hidden px-5 py-2.5 border border-green-700 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 "
                   >
                     {/* Bottom-to-Top White Layer Fill Slide Animation */}
                     <span className="absolute inset-0 w-full h-full bg-emerald-400 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
@@ -1723,7 +1840,7 @@ export default function App() {
                       icon: FaGithub,
                       text: "ayushdewangan21",
                       href: "https://github.com/ayushdewangan21/",
-                      border: "border-white",
+                      border: "border-zinc-600 hover:border-white",
                       fill: "bg-white",
                       hoverText: "group-hover:text-black",
                     },
@@ -1731,7 +1848,7 @@ export default function App() {
                       icon: FaLinkedin,
                       text: "ayushdewangan21",
                       href: "https://linkedin.com/in/ayushdewangan21",
-                      border: "border-blue-500",
+                      border: "border-blue-500/60",
                       fill: "bg-blue-600",
                       hoverText: "group-hover:text-white",
                     },
@@ -1739,7 +1856,7 @@ export default function App() {
                       icon: Mail,
                       text: "ayush.dewangan2109@gmail.com",
                       href: "mailto:ayush.dewangan2109@gmail.com",
-                      border: "border-red-500",
+                      border: "border-red-500/60",
                       fill: "bg-red-500",
                       hoverText: "group-hover:text-white",
                     },
@@ -1752,7 +1869,7 @@ export default function App() {
                       className={`relative group overflow-hidden flex items-center gap-3 px-3.5 py-2.5 bg-zinc-900/60 border ${contact.border} text-zinc-300 shadow-md transition-all duration-200`}
                     >
                       {/* Bottom-to-Top Fill Slide Animation */}
-                      <span className={`absolute inset-0 w-full h-full ${contact.fill} translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0`} />
+                      <span className={`absolute inset-0 w-full h-full ${contact.fill} opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-200 ease-out z-0`} />
 
                       {/* Content */}
                       <span className={`relative z-10 flex items-center gap-3 ${contact.hoverText} transition-colors duration-200`}>
@@ -1790,7 +1907,7 @@ export default function App() {
                 <motion.button
 
                   type="submit"
-                  className="relative group overflow-hidden w-full px-8 py-2.5 bg-zinc-100 border border-zinc-100 text-zinc-950 font-bold shadow-lg transition-all duration-200 hover:border-zinc-700"
+                  className="relative group overflow-hidden w-full px-8 py-2.5 bg-zinc-100 border border-zinc-100 text-zinc-950 font-bold shadow-lg transition-all duration-200 hover:border-zinc-800"
                 >
                   {/* Bottom-to-Top Black Layer Fill Slide Animation */}
                   <span className="absolute inset-0 w-full h-full bg-zinc-950 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
@@ -1811,9 +1928,9 @@ export default function App() {
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-zinc-500 text-sm group-hover:text-black transition-colors duration-200">
-              © 2026 Ayush Dewangan  •  Software DeveEngineer • Building modern
+              © 2026 Ayush Dewangan  •  Software Engineer • Building modern
               web experiences
-            </p> 
+            </p>
           </div>
         </footer>
       </main>
