@@ -99,9 +99,9 @@ h3 {
 
 .shine-border-card {
   position: relative;
-  padding: 1px;
-  /* Very thin border */
-  
+  padding: 0.5px;
+  /* Ultra thin border */
+
   overflow: hidden;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
   transition: all 0.3s ease;
@@ -137,6 +137,106 @@ h3 {
       #ffffff 360deg);
 }
 
+.shine-border-card-blue {
+  position: relative;
+  padding: 0.5px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(9, 139, 165, 0.936), 0 0 2px rgba(147, 197, 253, 0.4);
+  transition: all 0.3s ease;
+}
+
+.shine-border-card-blue::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(from 0deg,
+      #93c5fd 0deg,
+      #3b82f6 90deg,
+      #1d4ed8 180deg,
+      #60a5fa 270deg,
+      #1d4ed8 360deg);
+  animation: spin-border 4s linear infinite;
+  z-index: 0;
+}
+
+.shine-border-card-amber {
+  position: relative;
+  padding: 0.5px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(234, 179, 8, 0.8), 0 0 2px rgba(253, 224, 71, 0.4);
+  transition: all 0.3s ease;
+}
+
+.shine-border-card-amber::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(from 0deg,
+      #fde047 0deg,
+      #eab308 90deg,
+      #ca8a04 180deg,
+      #fef08a 270deg,
+      #ca8a04 360deg);
+  animation: spin-border 4s linear infinite;
+  z-index: 0;
+}
+
+.shine-border-card-emerald {
+  position: relative;
+  padding: 0.5px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8), 0 0 2px rgba(110, 231, 183, 0.4);
+  transition: all 0.3s ease;
+}
+
+.shine-border-card-emerald::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(from 0deg,
+      #6ee7b7 0deg,
+      #10b981 90deg,
+      #047857 180deg,
+      #a7f3d0 270deg,
+      #047857 360deg);
+  animation: spin-border 4s linear infinite;
+  z-index: 0;
+}
+
+.shine-border-card-rose {
+  position: relative;
+  padding: 0.5px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(236, 72, 153, 0.9), 0 0 5px rgba(217, 70, 239, 0.6);
+  transition: all 0.3s ease;
+}
+
+.shine-border-card-rose::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(from 0deg,
+      #f472b6 0deg,
+      #ec4899 90deg,
+      #0055ff 180deg,
+      #db2777 270deg,
+      #1500ff 360deg);
+  animation: spin-border 4s linear infinite;
+  z-index: 0;
+}
+
 .shine-border-inner {
   position: relative;
   z-index: 10;
@@ -162,12 +262,12 @@ h3 {
 
 /* Shiny White Silhouette Border for Transparent PNG */
 @keyframes png-shiny-border-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     filter: drop-shadow(0 0 2px #7e7e7e)
-           
-           
   }
- 
+
 }
 
 .png-shiny-border {

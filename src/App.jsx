@@ -40,8 +40,20 @@ import {
   SiMongodb,
   SiVercel,
   SiReactquery,
+  SiSpringboot,
+  SiApachemaven,
+  SiDocker,
+  SiPostman,
 } from "react-icons/si";
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+
+function XIcon({ size = 18, className = "" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 const hrProjectViews = [
   {
@@ -86,11 +98,125 @@ const hrProjectViews = [
   },
 ];
 
+const edemyProjectViews = [
+  {
+    id: "edemy-home",
+    title: "Edemy Landing & Course Discovery Portal",
+    description:
+      "Modern home platform featuring interactive course search, category recommendations, learner statistics, and global partner brand integrations.",
+    image: "/edemy-lms/edemy-home.png",
+    tag: "Landing Portal",
+  },
+  {
+    id: "edemy-courses",
+    title: "Course Catalog & Explorer",
+    description:
+      "Comprehensive course listing grid showcasing topic badges, instructor credits, star ratings, dynamic price tags, and quick search filters.",
+    image: "/edemy-lms/edemy-course-list.png",
+    tag: "Course Catalog",
+  },
+  {
+    id: "edemy-details",
+    title: "Interactive Course Page & Syllabus",
+    description:
+      "Rich course detailed view with accordion lecture breakdown, video duration previews, limited-time discount pricing banner, course perks checklist, and enrollment workflow.",
+    image: "/edemy-lms/edemy-course-details.png",
+    tag: "Course Syllabus",
+  },
+];
+
+const restaurantProjectViews = [
+  {
+    id: "restaurant-hero",
+    title: "UrbanBite Artisanal Gastronomy Hero",
+    description:
+      "Modern Michelin-selection restaurant platform featuring artisanal dining odyssey showcase, chef's tasting highlights, and instant table reservation.",
+    image: "/Restaurant/restaurant-hero.png",
+    tag: "Landing Experience",
+  },
+  {
+    id: "restaurant-menu",
+    title: "Fresh & Seasonal Digital Menu",
+    description:
+      "Interactive menu explorer with real-time sync, dish filter categories (Starters, Main Courses, Desserts, Mixology), and live order selection.",
+    image: "/Restaurant/restaurant-menu.png",
+    tag: "Menu Catalog",
+  },
+  {
+    id: "restaurant-overview",
+    title: "Full Restaurant Platform Overview",
+    description:
+      "Complete end-to-end interface overview showcasing seamless navigation, course highlights, and gourmet dining management.",
+    image: "/Restaurant/image.png",
+    tag: "Full Overview",
+  },
+  {
+    id: "restaurant-preview",
+    title: "Interactive Dining Features",
+    description:
+      "Detailed view of guest experience offerings, table booking workflow, and sommelier cellar pairings.",
+    image: "/Restaurant/image copy.png",
+    tag: "Dining Features",
+  },
+  {
+    id: "restaurant-story",
+    title: "Culinary Heritage & Story",
+    description:
+      "Rich brand story view showcasing woodfire hearth roasting, bio-dynamic organic sourcing, sommelier cellar pairings, and Michelin accolades.",
+    image: "/Restaurant/restaurant-story.png",
+    tag: "Story & Heritage",
+  },
+  {
+    id: "restaurant-degustation",
+    title: "Seven-Course Grand Degustation",
+    description:
+      "Signature flagship dining progression featuring rare ingredient pairings (Caviar, Wagyu, Black Truffles) and chef's table reservation booking.",
+    image: "/Restaurant/restaurant-degustation.png",
+    tag: "Degustation Experience",
+  },
+  {
+    id: "restaurant-experiences",
+    title: "Exclusive Culinary Experiences & Academies",
+    description:
+      "Bespoke dining lounges, weekend masterclasses led by executive chefs, and subterranean sommelier cellar blind tasting sessions.",
+    image: "/Restaurant/restaurant-experiences.png",
+    tag: "Exclusive Events",
+  },
+];
+
+const socialMediaProjectViews = [
+  {
+    id: "social-media-feed",
+    title: "Social Media Feed & Activity Portal",
+    description:
+      "Interactive social networking platform featuring real-time activity feed, user post creation, rich media sharing, and instant engagement tools.",
+    image: "/social-media/image.png",
+    tag: "Social Feed",
+  },
+  {
+    id: "social-media-profile",
+    title: "User Profile & Network Hub",
+    description:
+      "Comprehensive user profile manager featuring follower stats, custom bio settings, post activity timeline, and direct messaging workflows.",
+    image: "/social-media/image copy.png",
+    tag: "User Profile",
+  },
+  {
+    id: "social-media-explore",
+    title: "Explore & Community Discovery",
+    description:
+      "Community hub featuring algorithm-driven post recommendations, search filtering, trending hashtag topics, and real-time interaction metrics.",
+    image: "/social-media/image copy 2.png",
+    tag: "Community Hub",
+  },
+];
+
 function ThreeSixtyCarousel({
   views,
   activeView,
   setActiveView,
   onImageClick,
+  shineColor = "white",
 }) {
   const containerRef = useRef(null);
   const isScrollingRef = useRef(false);
@@ -186,7 +312,7 @@ function ThreeSixtyCarousel({
             onClick={() => onImageClick(views[activeView].image)}
             className="w-[210px] sm:w-[310px] md:w-[370px] lg:w-[410px] aspect-video cursor-pointer z-30"
           >
-            <div className="shine-border-card">
+            <div className={shineColor === "blue" ? "shine-border-card-blue" : shineColor === "amber" ? "shine-border-card-amber" : shineColor === "emerald" ? "shine-border-card-emerald" : shineColor === "rose" ? "shine-border-card-rose" : "shine-border-card"}>
               <div className="shine-border-inner aspect-video group relative">
                 <img
                   src={views[activeView].image}
@@ -332,6 +458,9 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("About");
   const [activeHrView, setActiveHrView] = useState(0);
+  const [activeEdemyView, setActiveEdemyView] = useState(0);
+  const [activeRestaurantView, setActiveRestaurantView] = useState(0);
+  const [activeSocialMediaView, setActiveSocialMediaView] = useState(0);
   const [lightboxImage, setLightboxImage] = useState(null);
 
   // Scroll-linked persistent #star animation setup
@@ -684,6 +813,14 @@ export default function App() {
                       border: "hover:border-red-500",
                       fill: "bg-red-500",
                       hoverText: "group-hover:text-white",
+                    },
+                    {
+                      icon: XIcon,
+                      href: "https://x.com/hynovation",
+                      label: "X (Twitter)",
+                      border: "hover:border-zinc-400",
+                      fill: "bg-white",
+                      hoverText: "group-hover:text-black",
                     },
                   ].map((social, index) => (
                     <motion.a
@@ -1206,6 +1343,42 @@ export default function App() {
                   feature: "Automated preview deployments, edge functions & SSL",
                 },
                 {
+                  name: "Spring Boot",
+                  icon: SiSpringboot,
+                  color: "text-emerald-400",
+                  bgColor: "bg-emerald-600",
+                  badgeColor: "bg-emerald-400",
+            
+                  feature: "Spring MVC, Spring Security, Spring Data JPA & Hibernate",
+                },
+                {
+                  name: "Maven",
+                  icon: SiApachemaven,
+                  color: "text-red-400",
+                  bgColor: "bg-red-600",
+                  badgeColor: "bg-red-400",
+              
+                  feature: "POM configuration, multi-module builds & dependency resolution",
+                },
+                {
+                  name: "Postman",
+                  icon: SiPostman,
+                  color: "text-orange-400",
+                  bgColor: "bg-orange-600",
+                  badgeColor: "bg-orange-400",
+                  exp: "REST API testing, documentation & endpoint validation",
+                  feature: "Automated test suites, collection runners & environment variables",
+                },
+                {
+                  name: "Docker",
+                  icon: SiDocker,
+                  color: "text-sky-400",
+                  bgColor: "bg-sky-600",
+                  badgeColor: "bg-sky-400",
+                 
+                  feature: "Dockerfiles, Docker Compose, containerized services & microservices",
+                },
+                {
                   name: "CI/CD Pipeline",
                   icon: Workflow,
                   color: "text-blue-400",
@@ -1331,8 +1504,8 @@ export default function App() {
                         {/* Tooltip Side Arrow Pointer */}
                         <div
                           className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rotate-45 z-10 ${tech.bgColor} ${isRightSide
-                              ? "-right-1.5 border-r border-t border-zinc-700/80"
-                              : "-left-1.5 border-l border-b border-zinc-700/80"
+                            ? "-right-1.5 border-r border-t border-zinc-700/80"
+                            : "-left-1.5 border-l border-b border-zinc-700/80"
                             }`}
                         />
                       </div>
@@ -1511,12 +1684,12 @@ export default function App() {
                 {
                   icon: Database,
                   title: "Backend Integration",
-                  skills: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis", "Supabase", "REST APIs", "WebSockets"],
+                  skills: ["Spring Boot", "Node.js", "Express", "PostgreSQL", "MongoDB", "Redis", "Supabase", "REST APIs", "WebSockets"],
                 },
                 {
                   icon: Award,
                   title: "Tools & Testing",
-                  skills: ["Postman", "Vercel", "CI/CD Pipeline", "Git/GitHub"],
+                  skills: ["Postman", "Docker", "Maven", "Vercel", "CI/CD Pipeline", "Git/GitHub"],
                 },
               ].map((category, index) => (
                 <motion.div
@@ -1681,13 +1854,13 @@ export default function App() {
 
         {/* Projects Section */}
         <section id="projects" className="py-24 bg-black text-white relative overflow-hidden">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mr-20" >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-left mb-20"
+              className="text-left mb-30 "
             >
               <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
                 <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
@@ -1699,14 +1872,27 @@ export default function App() {
             </motion.div>
 
             {/* 3D 360 Showcase Card (Left: Specification, Right: Slideshow) */}
-            <div className="backdrop-blur-md rounded-2xl p-2 sm:p-4 shadow-2xl mb-12 flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
+            <div className="backdrop-blur-md rounded-2xl p-2 sm:p-4 shadow-2xl mb-40 flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+              {/* Vertical Tech Text on Left */}
+              <div className="flex items-center justify-center px-2 sm:px-3 select-none flex-shrink-0">
+                <motion.span
+                  initial={{ opacity: 0, x: -160, }}
+                  whileInView={{ opacity: 1, x: 0, }}
+                  viewport={{ amount: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="f text-4xl sm:text-5xl mr-50 absolute font-extrabold tracking-widest uppercase text-yellow-400/90 [writing-mode:vertical-rl] rotate-180 font-mono whitespace-nowrap"
+                >
+                  MERN
+                </motion.span>
+              </div>
+
               {/* Left Side: Specification of Project */}
               <div className="lg:w-5/12 w-full space-y-5 flex flex-col justify-between">
                 <div className="space-y-3.5">
 
-                  <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
-                    HUMAN RESOURCE MANAGEMENT AUTOMATION SYSTEM <span className="text-purple-600">.</span>
-                  </h3>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
+                    HR Management Automation System <span className="text-purple-600">.</span>
+                  </h2>
 
                   <div className="space-y-1.5 pt-1">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
@@ -1794,6 +1980,355 @@ export default function App() {
               </div>
             </div>
 
+             {/* 3D 360 Showcase Card (Left: Specification, Right: Slideshow) */}
+            <div className="backdrop-blur-md rounded-2xl p-2 sm:p-4 shadow-2xl mb-40 flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+              {/* Vertical Tech Text on Left */}
+              <div className="flex items-center justify-center px-2 sm:px-3 select-none flex-shrink-0">
+                <motion.span
+                  initial={{ opacity: 0, x: -160, filter: "blur(6px)" }}
+                  whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  viewport={{ amount: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="f text-4xl sm:text-5xl mr-50 absolute font-extrabold tracking-widest uppercase text-yellow-400/90 [writing-mode:vertical-rl] rotate-180 font-mono whitespace-nowrap"
+                >
+                  MERN
+                </motion.span>
+              </div>
+              {/* Left Side: Specification of Project */}
+              <div className="lg:w-5/12 w-full space-y-5 flex flex-col justify-between">
+                <div className="space-y-3.5">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
+                    Edemy LEARNING MANAGEMENT SYSTEM <span className="text-blue-500">.</span>
+                  </h2>
+
+                  <div className="space-y-1.5 pt-1">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                      {edemyProjectViews[activeEdemyView].title}
+                    </h4>
+                    <p className="text-zinc-300 text-sm leading-relaxed">
+                      {edemyProjectViews[activeEdemyView].description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Key Specifications Box */}
+                <div className="space-y-3 bg-zinc-950/80 p-4.5 border border-zinc-800 shadow-inner">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center justify-between">
+                    <span>Key Specifications:</span>
+                  </h4>
+                  <ul className="space-y-2 text-xs sm:text-sm text-zinc-300">
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-zinc-200 flex-shrink-0" />
+                      <span>Interactive course catalog & category filtering</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-zinc-300 flex-shrink-0" />
+                      <span>Modular syllabus breakdown with video previews</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-zinc-300 flex-shrink-0" />
+                      <span>Discount pricing countdown & enrollment workflow</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-zinc-400 flex-shrink-0" />
+                      <span>Responsive UI with ratings & instructor profiles</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Project Links (Live Link + GitHub Repo) */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <a
+                    href="https://lms-fronntend.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-5 py-2.5 border border-blue-600 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200"
+                  >
+                    {/* Bottom-to-Top Blue Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-blue-500 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 transition-colors duration-200">
+                      <span>Live Link</span>
+                      <ExternalLink size={15} />
+                    </span>
+                  </a>
+
+                  <a
+                    href="https://github.com/AyushDewangan21/lms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-5 py-2.5 border border-zinc-700 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 hover:border-white"
+                  >
+                    {/* Bottom-to-Top White Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>GitHub</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Side: Slideshow Carousel */}
+              <div className="lg:w-7/12 w-full min-w-0">
+                <ThreeSixtyCarousel
+                  views={edemyProjectViews}
+                  activeView={activeEdemyView}
+                  setActiveView={setActiveEdemyView}
+                  onImageClick={(img) => setLightboxImage(img)}
+                  shineColor="blue"
+                />
+              </div>
+            </div>
+
+            {/* 3D 360 Showcase Card (Left: Specification, Right: Slideshow) */}
+            <div className="backdrop-blur-md rounded-2xl p-2 sm:p-4 shadow-2xl mb-50 flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+              {/* Vertical Tech Text on Left */}
+              <div className="flex items-center justify-center px-2 sm:px-3 select-none flex-shrink-0">
+                <motion.span
+                  initial={{ opacity: 0, x: -160, filter: "blur(6px)" }}
+                  whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  viewport={{ amount: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="f text-4xl sm:text-5xl mr-50 absolute font-extrabold tracking-widest uppercase [writing-mode:vertical-rl] rotate-180 font-mono whitespace-nowrap"
+                >
+                  <span className="text-emerald-400/90">SPRING BOOT</span>{" "}
+                  <span className="text-sky-400/90">REACT</span>
+                </motion.span>
+              </div>
+              {/* Left Side: Specification of Project */}
+              <div className="lg:w-5/12 w-full space-y-5 flex flex-col justify-between">
+                <div className="space-y-3.5">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
+                    UrbanBite Restaurant Platform <span className="text-amber-400">.</span>
+                  </h2>
+
+                  <div className="space-y-1.5 pt-1">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                      {restaurantProjectViews[activeRestaurantView].title}
+                    </h4>
+                    <p className="text-zinc-300 text-sm leading-relaxed">
+                      {restaurantProjectViews[activeRestaurantView].description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Key Specifications Box */}
+                <div className="space-y-3 bg-zinc-950/80 p-4.5 border border-zinc-800 shadow-inner">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center justify-between">
+                    <span>Key Specifications:</span>
+                  </h4>
+                  <ul className="space-y-2 text-xs sm:text-sm text-zinc-300">
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-amber-400 flex-shrink-0" />
+                      <span>Artisanal gastronomy hero with live table reservations</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-amber-400 flex-shrink-0" />
+                      <span>Interactive dish catalog & real-time menu sync</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-amber-400 flex-shrink-0" />
+                      <span>7-Course grand degustation flagship progression</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-amber-300 flex-shrink-0" />
+                      <span>Culinary masterclass & sommelier cellar bookings</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Project Links (3 GitHub Repos: GitHub, Frontend, Backend) */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <a
+                    href="https://github.com/AyushDewangan21/portfolio_UrbanBite_Restaurant"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-4 sm:px-5 py-2.5 border border-zinc-700 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 hover:border-white"
+                  >
+                    {/* Bottom-to-Top White Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>GitHub</span>
+                    </span>
+                  </a>
+
+                  <a
+                    href="https://github.com/AyushDewangan21/portfolio_UrbanBite_Restaurant/tree/main/frontend"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-4 sm:px-5 py-2.5 border border-sky-600 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200"
+                  >
+                    {/* Bottom-to-Top Sky Blue Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-sky-500 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>Frontend</span>
+                    </span>
+                  </a>
+
+                  <a
+                    href="https://github.com/AyushDewangan21/portfolio_UrbanBite_Restaurant/tree/main/backend"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-4 sm:px-5 py-2.5 border border-emerald-600 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200"
+                  >
+                    {/* Bottom-to-Top Emerald Green Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-emerald-500 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>Backend</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Side: Slideshow Carousel */}
+              <div className="lg:w-7/12 w-full min-w-0">
+                <ThreeSixtyCarousel
+                  views={restaurantProjectViews}
+                  activeView={activeRestaurantView}
+                  setActiveView={setActiveRestaurantView}
+                  onImageClick={(img) => setLightboxImage(img)}
+                  shineColor="amber"
+                />
+              </div>
+            </div>
+
+            {/* 3D 360 Showcase Card (Left: Specification, Right: Slideshow) */}
+            <div className="backdrop-blur-md rounded-2xl p-2 sm:p-4 shadow-2xl mb-60 flex flex-col lg:flex-row gap-6 lg:gap-8 items-center">
+              {/* Vertical Tech Text on Left */}
+              <div className="flex items-center justify-center px-2 sm:px-3 select-none flex-shrink-0">
+                <motion.span
+                  initial={{ opacity: 0, x: -160, filter: "blur(6px)" }}
+                  whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  viewport={{ amount: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="f text-4xl sm:text-5xl mr-50 absolute font-extrabold tracking-widest uppercase [writing-mode:vertical-rl] rotate-180 font-mono whitespace-nowrap"
+                >
+                  <span className="text-emerald-400/90">SPRING BOOT</span>{" "}
+                  <span className="text-sky-400/90">REACT</span>
+                </motion.span>
+              </div>
+              {/* Left Side: Specification of Project */}
+              <div className="lg:w-5/12 w-full space-y-5 flex flex-col justify-between">
+                <div className="space-y-3.5">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug">
+                    Social Media Pro + <span className="text-pink-600">.</span>
+                  </h2>
+
+                  <div className="space-y-1.5 pt-1">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-pink-600"></span>
+                      {socialMediaProjectViews[activeSocialMediaView].title}
+                    </h4>
+                    <p className="text-zinc-300 text-sm leading-relaxed">
+                      {socialMediaProjectViews[activeSocialMediaView].description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Key Specifications Box */}
+                <div className="space-y-3 bg-zinc-950/80 p-4.5 border border-zinc-800 shadow-inner">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center justify-between">
+                    <span>Key Specifications:</span>
+                  </h4>
+                  <ul className="space-y-2 text-xs sm:text-sm text-zinc-300">
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-pink-500  flex-shrink-0" />
+                      <span>Real-time activity feed & post publishing workflow</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-pink-500 flex-shrink-0" />
+                      <span>Spring Boot RESTful API services & backend architecture</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-pink-500  flex-shrink-0" />
+                      <span>Responsive React UI with instant post interactions & uploads</span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <CheckCircle2 size={15} className="text-pink-500  flex-shrink-0" />
+                      <span>User profiles, follower networks & community hub</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Project Links (3 GitHub Repos: GitHub, Frontend, Backend) */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <a
+                    href="https://github.com/AyushDewangan21/portfolio_Social_Media_Pro"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-4 sm:px-5 py-2.5 border border-zinc-700 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200 hover:border-white"
+                  >
+                    {/* Bottom-to-Top White Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>GitHub</span>
+                    </span>
+                  </a>
+
+                  <a
+                    href="https://github.com/AyushDewangan21/portfolio_Social_Media_Pro/tree/main/frontend"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-4 sm:px-5 py-2.5 border border-sky-600 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200"
+                  >
+                    {/* Bottom-to-Top Sky Blue Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-sky-500 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>Frontend</span>
+                    </span>
+                  </a>
+
+                  <a
+                    href="https://github.com/AyushDewangan21/portfolio_Social_Media_Pro/tree/main/backend"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group overflow-hidden px-4 sm:px-5 py-2.5 border border-emerald-600 text-zinc-200 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all duration-200"
+                  >
+                    {/* Bottom-to-Top Emerald Green Layer Fill Slide Animation */}
+                    <span className="absolute inset-0 w-full h-full bg-emerald-500 translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-out z-0" />
+
+                    {/* Content */}
+                    <span className="relative z-10 flex items-center gap-2 group-hover:text-zinc-950 transition-colors duration-200">
+                      <FaGithub size={16} />
+                      <span>Backend</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Side: Slideshow Carousel */}
+              <div className="lg:w-7/12 w-full min-w-0">
+                <ThreeSixtyCarousel
+                  views={socialMediaProjectViews}
+                  activeView={activeSocialMediaView}
+                  setActiveView={setActiveSocialMediaView}
+                  onImageClick={(img) => setLightboxImage(img)}
+                  shineColor="rose"
+                />
+              </div>
+            </div>
+
 
 
 
@@ -1859,6 +2394,14 @@ export default function App() {
                       border: "border-red-500/60",
                       fill: "bg-red-500",
                       hoverText: "group-hover:text-white",
+                    },
+                    {
+                      icon: XIcon,
+                      text: "Ayush Dewangan",
+                      href: "https://x.com/hynovation",
+                      border: "border-zinc-600 hover:border-zinc-300",
+                      fill: "bg-white",
+                      hoverText: "group-hover:text-black",
                     },
                   ].map((contact, index) => (
                     <motion.a
@@ -1928,8 +2471,8 @@ export default function App() {
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-zinc-500 text-sm group-hover:text-black transition-colors duration-200">
-              © 2026 Ayush Dewangan  •  Software Engineer • Building modern
-              web experiences
+              © 2026 Ayush Dewangan  •  Full Stack Software Engineer • Building modern
+              web application
             </p>
           </div>
         </footer>
