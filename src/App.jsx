@@ -1772,7 +1772,7 @@ export default function App() {
 
                       <div>
                         <h3 className="text-2xl font-bold text-white tracking-tight">
-                          Full Stack Web Developer Intern
+                          Full Stack Web Developer
                         </h3>
                         <p className="text-zinc-400 font-medium">
                           Botivate Services LLP
@@ -1782,19 +1782,20 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-
-
+                    <span className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-medium">
+                      Full Time
+                    </span>
                     <span className="px-4 py-2 rounded-full bg-zinc-800/80 border border-zinc-700/60 text-zinc-300 text-sm font-medium">
-                      Feb 2026 — July 2026
+                      June 2025 — July 2026
                     </span>
                   </div>
                 </div>
 
                 {/* Description */}
                 <p className="text-zinc-300 leading-8 text-[15px] mb-8">
-                  Worked as a {" "}
+                  Worked as a full-time{" "}
                   <span className="text-white font-semibold">
-                    Full Stack Web Developer Intern
+                    Full Stack Web Developer
                   </span>
                   , developing modern, responsive, and scalable web
                   applications. Building end-to-end solutions using React.js and
